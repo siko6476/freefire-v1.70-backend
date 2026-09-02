@@ -2,25 +2,21 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// معالجة البيانات القادمة بترميز JSON و Form-Data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// طباعة كل طلب يصل من اللعبة لمعرفة المسارات التي تستدعيها
+// سجل الطلبات لمعرفة ما تطلبه اللعبة
 app.use((req, res, next) => {
     console.log(`[${new Date().toLocaleTimeString()}] ${req.method} -> ${req.url}`);
-    if (Object.keys(req.body).length > 0) {
-        console.log('Payload:', JSON.stringify(req.body));
-    }
     next();
 });
 
-// المسار الرئيسي لتأكيد تشغيل السيرفر
+// المسار الرئيسي للفتح من المتصفح
 app.get('/', (req, res) => {
-    res.send('Free Fire v1.70.0 Server is Live');
+    res.send('Server Free Fire v1.70.0 is running!');
 });
 
-// الاستجابة لجميع مسارات /live/ وتوفير بيانات الدخول الأساسية
+// استجابة اللعبة الخاصة بمسار live
 app.all('/live/*', (req, res) => {
     res.json({
         status: 0,
@@ -36,5 +32,5 @@ app.all('/live/*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
